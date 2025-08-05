@@ -1,8 +1,16 @@
+@font-face {
+  font-family: 'Manrope';
+  src: url('./assets/Manrope-Regular.ttf');
+  font-weight: normal;
+  font-style: normal;
+}
+* {
+  font-family: 'Manrope';
+}
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
-
+  font-family: 'Manrope';
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
   background-color: #242424;
@@ -88,8 +96,8 @@ button:focus-visible {
 .custom-placeholder.has-value {
   top: 8px;
   font-size: 10px;
-  line-height:10px;
-    color: #999;
+  line-height: 10px;
+  color: #999;
 }
 
 .redmark {
@@ -97,8 +105,14 @@ button:focus-visible {
 }
 
 .ant-input {
-  padding-top: 12px ;
+  padding-top: 12px;
 }
-.ant-form-item{
-  margin-bottom: 12px!important;
+.ant-form-item {
+  margin-bottom: 12px !important;
+}
+
+.main-wrapper {
+  @media (max-width: 660px) {
+    flex-direction: column;
+  }
 }

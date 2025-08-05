@@ -1,9 +1,10 @@
 import { CalendarOutlined, ClockCircleOutlined, UserOutlined } from '@ant-design/icons';
 import { Button, Card, Checkbox, Col, Divider, Form, Row, Select } from 'antd';
+import image from './assets/Logo.svg';
 import img from './assets/Misty.png';
+import CustomDatepicker from './components/CustomDatepicker';
 import CustomInput from './components/CustomInput';
 import CustomSelector from './components/CustomSelector';
-import CustomDatepicker from './components/CustomDatepicker';
 import CustomTextArea from './components/CustomTextArea';
 const { Option } = Select;
 
@@ -16,6 +17,7 @@ export const BookingForm = () => {
 
   return (
     <div
+    className='main-wrapper'
       style={{
         minHeight: '100vh',
         display: 'flex',
@@ -23,6 +25,7 @@ export const BookingForm = () => {
         width: '100vw',
         justifyContent: 'space-evenly',
         background: `url(${img}) center/cover no-repeat`,
+        boxShadow: 'inset 0 100vh rgba(0, 0, 0, 0.7)',
       }}>
       <div
         style={{
@@ -33,7 +36,7 @@ export const BookingForm = () => {
           fontWeight: 'bold',
         }}
         className='logo-placeholder'>
-        MISTY
+        <img src={image} />
         <div style={{ fontSize: 14, fontWeight: 'normal' }}>Экосистема проектов</div>
       </div>
 
@@ -46,7 +49,7 @@ export const BookingForm = () => {
           <div style={{ fontSize: 12, color: '#999' }}>ул. Спартаковская, 3с1</div>
         </div>
         <Form form={form} layout='vertical' onFinish={onFinish} requiredMark='optional'>
-          <Row gutter={[8,0]}>
+          <Row gutter={[8, 0]}>
             <Col span={24}>
               <Form.Item
                 name='date'
