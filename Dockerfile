@@ -2,9 +2,9 @@
 FROM node:18-alpine AS build
 WORKDIR /app
 
-# Копируем только файлы, необходимые для установки зависимостей
-COPY package.json package-lock.json ./
-RUN npm ci --production
+# Копируем только package.json (так как package-lock.json отсутствует)
+COPY package.json ./
+RUN npm install --production
 
 # Копируем остальные файлы и собираем проект
 COPY . .
