@@ -1,5 +1,6 @@
 import { DatePicker, type DatePickerProps } from 'antd';
 
+import locale from 'antd/lib/date-picker/locale/ru_RU';
 import type { Dayjs } from 'dayjs';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ru'; // для русской локализации
@@ -43,6 +44,7 @@ const CustomDatepicker = ({ text, ...rest }: CustomDatePickerProps) => {
         }}
         style={{ height: '56px', width: '100%' }}
         suffixIcon={null}
+        locale={locale}
         format={formatDate}
         showToday={false}
         allowClear={false}

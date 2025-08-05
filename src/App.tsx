@@ -1,23 +1,28 @@
-import { CalendarOutlined, ClockCircleOutlined, UserOutlined } from '@ant-design/icons';
-import { Button, Card, Checkbox, Col, Divider, Form, Row, Select } from 'antd';
+import { Form as AntForm, Card } from 'antd';
+import { useState } from 'react';
 import image from './assets/Logo.svg';
 import img from './assets/Misty.png';
-import CustomDatepicker from './components/CustomDatepicker';
-import CustomInput from './components/CustomInput';
-import CustomSelector from './components/CustomSelector';
-import CustomTextArea from './components/CustomTextArea';
-const { Option } = Select;
+import Form from './feature/Form';
+import FormResults from './feature/FormResults';
+
+enum formStep {
+  initial = 'initial',
+  finish = 'finish',
+  error = 'error',
+}
 
 export const BookingForm = () => {
-  const [form] = Form.useForm();
+  const [form] = AntForm.useForm();
+  const [step, setStep] = useState(formStep.initial);
 
   const onFinish = (values: unknown) => {
     console.log('Бронирование отправлено:', values);
+    setStep(formStep.finish);
   };
 
   return (
     <div
-    className='main-wrapper'
+      className='main-wrapper'
       style={{
         minHeight: '100vh',
         display: 'flex',
@@ -43,109 +48,18 @@ export const BookingForm = () => {
       <Card
         style={{ width: 400, backdropFilter: 'blur(8px)', background: '#121212' }}
         bodyStyle={{ padding: 16 }}>
-        <h3 style={{ textAlign: 'center', marginBottom: 16 }}>Бронирование столика</h3>
+        {step === formStep.initial && (
+          <h3 style={{ textAlign: 'center', marginBottom: 16 }}>Бронирование столика </h3>
+        )}
+        {step === formStep.finish && (
+          <h3 style={{ textAlign: 'center', marginBottom: 16 }}>Бронирование создано успешно </h3>
+        )}
         <div style={{ marginBottom: 16 }}>
           <strong>Urban Winery</strong>
           <div style={{ fontSize: 12, color: '#999' }}>ул. Спартаковская, 3с1</div>
         </div>
-        <Form form={form} layout='vertical' onFinish={onFinish} requiredMark='optional'>
-          <Row gutter={[8, 0]}>
-            <Col span={24}>
-              <Form.Item
-                name='date'
-                rules={[{ required: true, message: 'Пожалуйста, выберите дату' }]}>
-                <CustomDatepicker
-                  prefix={<CalendarOutlined style={{ color: '#9f9f9f' }} />}
-                  text='Дата'
-                  style={{ width: '100%' }}
-                />
-              </Form.Item>
-            </Col>
-
-            <Col span={12}>
-              <Form.Item
-                name='time'
-                rules={[{ required: true, message: 'Пожалуйста, выберите время' }]}>
-                <CustomSelector
-                  text='Время'
-                  style={{ width: '100%' }}
-                  prefix={<ClockCircleOutlined style={{ color: '#9f9f9f' }} />}>
-                  <Option value='1'>1</Option>
-                  <Option value='2'>2</Option>
-                  <Option value='3'>3</Option>
-                  <Option value='4'>4</Option>
-                  <Option value='5+'>5+</Option>
-                </CustomSelector>
-              </Form.Item>
-            </Col>
-
-            <Col span={12}>
-              <Form.Item
-                name='guests'
-                rules={[{ required: true, message: 'Укажите количество гостей' }]}>
-                <CustomSelector text='Гости' prefix={<UserOutlined style={{ color: '#9F9F9F' }} />}>
-                  <Option value='1'>1</Option>
-                  <Option value='2'>2</Option>
-                  <Option value='3'>3</Option>
-                  <Option value='4'>4</Option>
-                  <Option value='5+'>5+</Option>
-                </CustomSelector>
-              </Form.Item>
-            </Col>
-            <Divider style={{ margin: '20px 0' }} />
-            <Col span={12}>
-              <Form.Item
-                name='name'
-                rules={[{ required: true, message: 'Пожалуйста, введите имя' }]}>
-                <CustomInput text='Имя' />
-              </Form.Item>
-            </Col>
-
-            <Col span={12}>
-              <Form.Item
-                name='phone'
-                rules={[{ required: true, message: 'Пожалуйста, введите телефон' }]}>
-                <CustomInput text='Телефон' />
-              </Form.Item>
-            </Col>
-
-            <Col span={24}>
-              <Form.Item name='comment'>
-                <CustomTextArea rows={3} text='Комментарий к бронированию' />
-              </Form.Item>
-            </Col>
-
-            <Col span={24}>
-              {' '}
-              <Form.Item
-                name='agreement'
-                valuePropName='checked'
-                rules={[
-                  {
-                    validator: (_, value) =>
-                      value ? Promise.resolve() : Promise.reject(new Error('Необходимо согласие')),
-                  },
-                ]}>
-                <Checkbox>
-                  Я соглашаюсь с условиями{' '}
-                  <a href='/terms' style={{ color: '#ff5c01' }}>
-                    Пользовательского соглашения
-                  </a>{' '}
-                  и{' '}
-                  <a href='/privacy' style={{ color: '#ff5c01' }}>
-                    политикой конфиденциальности
-                  </a>
-                </Checkbox>
-              </Form.Item>
-            </Col>
-          </Row>
-
-          <Form.Item>
-            <Button type='primary' htmlType='submit' block>
-              Забронировать
-            </Button>
-          </Form.Item>
-        </Form>
+        {step === formStep.initial && <Form form={form} onFinish={onFinish} />}
+        {step === formStep.finish && <FormResults {...form.getFieldsValue()} />}
       </Card>
     </div>
   );
