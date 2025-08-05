@@ -1,0 +1,9 @@
+version: '3'
+services:
+  frontend:
+    hostname: frontend
+    image: misty-booking:latest
+    container_name: misty-booking
+    restart: unless-stopped
+    ports:
+      - '3116:3000'
