@@ -64,17 +64,20 @@ export const BookingForm = () => {
 
       <div>
         <Card
+          variant='borderless'
           className='border-card'
-          bodyStyle={{ padding: 16 }}>
-          {step === formStep.initial && (
-            <h3 style={{ textAlign: 'center', marginBottom: 16 }}>Бронирование столика </h3>
-          )}
-          {step === formStep.finish && (
-            <h3 style={{ textAlign: 'center', marginBottom: 16 }}>Бронирование создано успешно </h3>
-          )}
+          bodyStyle={{ padding: 16 }}
+          title={
+            <>
+              {step === formStep.initial && <h3 className='card-title'>Бронирование столика</h3>}
+              {step === formStep.finish && (
+                <h3 className='card-title'>Бронирование создано успешно</h3>
+              )}
+            </>
+          }>
           <div style={{ marginBottom: 16 }}>
-            <strong>Urban Winery</strong>
-            <div style={{ fontSize: 12, color: '#999' }}>ул. Спартаковская, 3с1</div>
+            <strong className='project-name'>Urban Winery</strong>
+            <div className='project-address'>ул. Спартаковская, 3с1</div>
           </div>
           {step === formStep.initial && <Form form={form} onFinish={onFinish} />}
           {step === formStep.finish && (
@@ -82,9 +85,10 @@ export const BookingForm = () => {
           )}
         </Card>
         {step === formStep.finish && (
-          <Card className='gradient-border-card'>
+          <Card className='gradient-border-card ' variant='borderless'>
             <div className='qr-wrapper'>
               <div className='qr-code-container'>
+                {/*   //TODO:внести корректный qr */}
                 <QRCode
                   value={'https://misty.ru/'}
                   size={90} // задаем явный размер
@@ -93,10 +97,17 @@ export const BookingForm = () => {
                 />
               </div>
               <div className='qr-text-wrapper'>
-                <span>Скачивай приложение, чтобы управлять бронированиями и получать бонусы!</span>
+                <span className='qr-text'>
+                  Скачивай приложение, чтобы управлять бронированиями и получать бонусы!
+                </span>
                 <div className='qr-icon-wrapper'>
-                  <img src={googleImg} />
-                  <img src={appStoreImg} />
+                  {/* //TODO:внести корректные ссылки */}
+                  <a href='ya.ru' target='_blank'>
+                    <img src={googleImg} />
+                  </a>
+                  <a href='ya.ru' target='_blank'>
+                    <img src={appStoreImg} />
+                  </a>
                 </div>
               </div>
             </div>
