@@ -36,6 +36,9 @@ body {
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
+  @media (max-width: 660px) {
+    height: 100dvh;
+  }
 }
 
 h1 {
@@ -115,4 +118,93 @@ button:focus-visible {
   @media (max-width: 660px) {
     flex-direction: column;
   }
+}
+.finish-text-wrapper span {
+  color: #9f9f9f;
+  font-size: 16px;
+  line-height: 24px;
+}
+.finish-form {
+  margin-bottom: 24px;
+}
+.qr-wrapper {
+  display: flex;
+  gap: 16px;
+  align-items: center; /* выравниваем по центру */
+}
+
+.qr-code-container {
+  width: 90px;
+  height: 90px;
+  flex-shrink: 0; /* предотвращаем сжатие */
+}
+
+.qr-icon-wrapper {
+  display: flex;
+  gap: 8px; /* добавляем отступ между иконками */
+}
+
+.qr-text-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 8px; /* добавляем отступ между элементами */
+}
+
+.border-card {
+  position: relative;
+  width: 464px;
+  backdrop-filter: blur(8px);
+  background: #121212;
+  border-radius: 16px;
+  @media (max-width: 660px) {
+    width: 100dvw;
+  }
+}
+.gradient-border-card {
+  position: relative;
+  width: 464px;
+  backdrop-filter: blur(8px);
+  background: #121212;
+  margin-top: 10px;
+  border-radius: 16px;
+  @media (max-width: 660px) {
+    width: 100dvw;
+  }
+}
+
+.gradient-border-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 16px;
+  padding: 1px;
+  background: linear-gradient(200.68deg, #ff5c00 -5.8%, #16e3ff 117.01%);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+.ant-notification-notice-wrapper {
+  background: #16310f !important;
+  width: 237px !important;
+  border-radius: 1000px !important;
+}
+.ant-notification-notice {
+  width: 237px !important;
+
+  padding: 10px 16px !important;
+}
+.ant-notification-notice-message {
+  color: #28ae07 !important;
+}
+.notification-text {
+  font-family: Manrope;
+  font-weight: 500;
+  font-size: 16px;
+  color: #28ae07 !important;
+  line-height: 24px;
+  letter-spacing: 0px;
+  text-align: center;
+  display: flex;
+  gap: 4px;
 }

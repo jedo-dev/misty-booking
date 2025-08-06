@@ -1,36 +1,50 @@
 import { CalendarOutlined, CommentOutlined, UserOutlined } from '@ant-design/icons';
+import { Button, Col, Row, Space } from 'antd';
 import type { FormValues } from '../Form';
-import { Button } from 'antd';
 
 interface CustomInputProps extends FormValues {
   text?: string;
+  resetForm: () => void;
 }
 
-const FormResults = ({  comment, date, name, phone, time }: CustomInputProps) => {
+const FormResults = ({ comment, date, name, phone, time, resetForm }: CustomInputProps) => {
   return (
-    <div>
-      <div>
-        <span>
+    <Row gutter={[8, 8]} className='finish-form'>
+      <Col span={24}>
+        <Space className='finish-text-wrapper'>
           <UserOutlined style={{ color: '#9F9F9F' }} />
-          {name} , {phone}
-        </span>
-      </div>
+          <span>{name},</span>
+          <span>{phone}</span>
+        </Space>
+      </Col>
 
-      <div>
-        <span>
+      <Col span={24}>
+        <Space className='finish-text-wrapper'>
           <CalendarOutlined style={{ color: '#9f9f9f' }} />
-          {date.format('dddd, D MMMM')} в {time}
-        </span>
-      </div>
-
-      <div>
-        <span>
+          <span>{date.format('dddd, D MMMM')}</span>
+          <span>в</span>
+          <span>{time}</span>
+        </Space>
+      </Col>
+      <Col span={24} style={{ marginBottom: '16px' }}>
+        <Space className='finish-text-wrapper'>
           <CommentOutlined style={{ color: '#9f9f9f' }} />
-          {comment}
-        </span>
-      </div>
-      <Button block type='primary'>Создать новое бронирование</Button>
-    </div>
+          <span> {comment}</span>
+        </Space>
+      </Col>
+
+      <Col span={24}>
+        <Button
+          size='large'
+          onClick={() => {
+            resetForm();
+          }}
+          block
+          type='primary'>
+          Создать новое бронирование
+        </Button>
+      </Col>
+    </Row>
   );
 };
 
