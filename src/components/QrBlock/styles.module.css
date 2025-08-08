@@ -1,0 +1,50 @@
+.card {
+  position: relative;
+  width: 464px;
+  backdrop-filter: blur(8px);
+  background: #121212;
+  margin-top: 10px;
+  border-radius: 16px;
+
+  @media (max-width: 700px) {
+    width: 100dvw;
+    display: none;
+  }
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 16px;
+  padding: 1px;
+  background: linear-gradient(200.68deg, #ff5c00 -5.8%, #16e3ff 117.01%);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+.qrWrapper {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+.qrCodeContainer {
+  width: 90px;
+  height: 90px;
+  flex-shrink: 0; /* предотвращаем сжатие */
+}
+.qrTextWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  span {
+    font-size: 16px;
+    line-height: 24px;
+  }
+}
+.qrIconWrapper {
+  display: flex;
+  gap: 8px; /* добавляем отступ между иконками */
+}

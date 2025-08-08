@@ -1,13 +1,16 @@
 import { CheckOutlined } from '@ant-design/icons';
-import { Form as AntForm, Card, notification, QRCode } from 'antd';
+import { Form as AntForm, Card, notification } from 'antd';
 import { useState } from 'react';
-import appStoreImg from './assets/app-store.png';
-import googleImg from './assets/google-play.png';
+
 import image from './assets/Logo.svg';
 import img from './assets/Misty.png';
+import BookingUnavailable from './components/BookingUnavailable';
+import PlaceInformation from './components/PlaceInformation';
+import QrBlock from './components/QrBlock';
 import { formStep } from './constant';
 import Form from './feature/Form';
 import FormResults from './feature/FormResults';
+import MobilePromoLoad from './feature/MobilePromoLoad';
 
 export const BookingForm = () => {
   const [form] = AntForm.useForm();
@@ -36,6 +39,7 @@ export const BookingForm = () => {
     form.resetFields();
     setStep(formStep.initial);
   };
+
   return (
     <div
       className='main-wrapper'
@@ -75,44 +79,18 @@ export const BookingForm = () => {
               )}
             </>
           }>
-          <div style={{ marginBottom: 16 }}>
-            <strong className='project-name'>Urban Winery</strong>
-            <div className='project-address'>ул. Спартаковская, 3с1</div>
-          </div>
+          <PlaceInformation text='Urban Winery' address='ул. Спартаковская, 3с1' />
           {step === formStep.initial && <Form form={form} onFinish={onFinish} />}
           {step === formStep.finish && (
-            <FormResults {...form.getFieldsValue()} resetForm={resetForm} />
+            <>
+              <FormResults {...form.getFieldsValue()} resetForm={resetForm} />
+              <MobilePromoLoad />
+            </>
           )}
+
+          {step === formStep.error && <BookingUnavailable />}
         </Card>
-        {step === formStep.finish && (
-          <Card className='gradient-border-card ' variant='borderless'>
-            <div className='qr-wrapper'>
-              <div className='qr-code-container'>
-                {/*   //TODO:внести корректный qr */}
-                <QRCode
-                  value={'https://misty.ru/'}
-                  size={90} // задаем явный размер
-                  style={{ width: '100%', height: '100%' }}
-                  bordered={false}
-                />
-              </div>
-              <div className='qr-text-wrapper'>
-                <span className='qr-text'>
-                  Скачивай приложение, чтобы управлять бронированиями и получать бонусы!
-                </span>
-                <div className='qr-icon-wrapper'>
-                  {/* //TODO:внести корректные ссылки */}
-                  <a href='ya.ru' target='_blank'>
-                    <img src={googleImg} />
-                  </a>
-                  <a href='ya.ru' target='_blank'>
-                    <img src={appStoreImg} />
-                  </a>
-                </div>
-              </div>
-            </div>
-          </Card>
-        )}
+        {step === formStep.finish && <QrBlock />}
       </div>
     </div>
   );

@@ -1,8 +1,16 @@
 import { ConfigProvider, theme } from 'antd';
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
+import { createBrowserRouter, RouterProvider } from 'react-router';
 import { BookingForm } from './App.tsx';
 import './index.css';
+
+const router = createBrowserRouter([
+  {
+    path: '/',
+    Component: BookingForm,
+  },
+]);
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -38,7 +46,7 @@ createRoot(document.getElementById('root')!).render(
           },
         },
       }}>
-      <BookingForm />
+      <RouterProvider router={router} />
     </ConfigProvider>
   </StrictMode>,
 );
