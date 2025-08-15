@@ -2,13 +2,16 @@ import { ConfigProvider, theme } from 'antd';
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from 'react-router';
-import { BookingForm } from './App.tsx';
+
 import './index.css';
+import Main from './pages/main';
+import NotFound from './pages/notFound';
 
 const router = createBrowserRouter([
   {
-    path: '/',
-    Component: BookingForm,
+    path: '/:id',
+    Component: Main,
+    errorElement: <NotFound />,
   },
 ]);
 

@@ -10,3 +10,13 @@
   font-size: 16px;
   color: #9f9f9f;
 }
+.rules {
+  background-color: #1f1f1f;
+  border-radius: 10px;
+  padding: 10px 16px;
+}
+.ruleText {
+  color: #9f9f9f;
+  font-size: 12px;
+  line-height: 16px;
+}

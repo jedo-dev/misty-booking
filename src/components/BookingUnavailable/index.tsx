@@ -3,7 +3,7 @@ import { Button } from 'antd';
 import styles from './styles.module.css';
 const BookingUnavailable = () => {
   const handleGoToMain = () => {
-    window.open('https://misty.ru', '_blank');
+    window.open('https://misty.ru');
   };
 
   return (

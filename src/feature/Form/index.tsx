@@ -3,10 +3,13 @@ import { Form as AntForm, Button, Checkbox, Col, Divider, Row, Select } from 'an
 
 import type { FormInstance } from 'antd/lib';
 import type { Dayjs } from 'dayjs';
+import React from 'react';
+import { fetchAvailableTimeSlots } from '../../api';
 import CustomDatepicker from '../../components/CustomDatepicker';
 import CustomInput from '../../components/CustomInput';
 import CustomSelector from '../../components/CustomSelector';
 import CustomTextArea from '../../components/CustomTextArea';
+import type { DayOfWeek } from '../../constant';
 const { Option } = Select;
 export interface FormValues {
   agreement: boolean;
@@ -20,9 +23,12 @@ export interface FormValues {
 interface FormProps {
   form: FormInstance<unknown> | undefined;
   onFinish: (values: unknown) => void;
+  daysOfWeek?: DayOfWeek[];
+  projectId?: string;
 }
 
-const Form = ({ form, onFinish }: FormProps) => {
+const Form = ({ form, onFinish, daysOfWeek = [], projectId }: FormProps) => {
+  const [options, setOptions] = React.useState<string[]>([]);
   return (
     <AntForm form={form} layout='vertical' onFinish={onFinish} requiredMark='optional'>
       <Row gutter={[8, 0]}>
@@ -31,8 +37,18 @@ const Form = ({ form, onFinish }: FormProps) => {
             name='date'
             rules={[{ required: true, message: 'Пожалуйста, выберите дату' }]}>
             <CustomDatepicker
+              projectId={projectId || ''}
+              onChange={async (date, formatted) => {
+                const data = await fetchAvailableTimeSlots({
+                  projectId: projectId || '',
+                  date: !Array.isArray(formatted) ? formatted || '' : '',
+                });
+
+                setOptions(data);
+              }}
               prefix={<CalendarOutlined style={{ color: '#9f9f9f' }} />}
               text='Дата'
+              daysOfWeek={daysOfWeek}
               style={{ width: '100%' }}
             />
           </AntForm.Item>
@@ -46,11 +62,9 @@ const Form = ({ form, onFinish }: FormProps) => {
               text='Время'
               style={{ width: '100%' }}
               prefix={<ClockCircleOutlined style={{ color: '#9f9f9f' }} />}>
-              <Option value='1'>1</Option>
-              <Option value='2'>2</Option>
-              <Option value='3'>3</Option>
-              <Option value='4'>4</Option>
-              <Option value='5+'>5+</Option>
+              {options.map((el: string) => (
+                <Option value={el}>{el}</Option>
+              ))}
             </CustomSelector>
           </AntForm.Item>
         </Col>
@@ -60,11 +74,9 @@ const Form = ({ form, onFinish }: FormProps) => {
             name='guests'
             rules={[{ required: true, message: 'Укажите количество гостей' }]}>
             <CustomSelector text='Гости' prefix={<UserOutlined style={{ color: '#9F9F9F' }} />}>
-              <Option value='1'>1</Option>
-              <Option value='2'>2</Option>
-              <Option value='3'>3</Option>
-              <Option value='4'>4</Option>
-              <Option value='5+'>5+</Option>
+              {Array.from({length: 20}, (v, i) => i).map((el, index) => {
+                return <Option value={index + 1}>{index + 1}</Option>;
+              })}
             </CustomSelector>
           </AntForm.Item>
         </Col>

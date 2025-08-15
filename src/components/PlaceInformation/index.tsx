@@ -1,15 +1,23 @@
-import { type InputProps } from 'antd';
 import styles from './styles.module.css';
-interface CustomInputProps extends InputProps {
+interface PlaceInformation {
   text: string;
   address: string;
+  rules?: string;
 }
 
-const PlaceInformation = ({ text, address }: CustomInputProps) => {
+const PlaceInformation = ({ text, address, rules }: PlaceInformation) => {
   return (
     <div className={styles.wrapper}>
       <strong className={styles.name}>{text}</strong>
       <div className={styles.address}>{address}</div>
+      {rules && (
+        <div className={styles.rules}>
+          <span>Правила бронирования</span>
+          <div>
+            <span className={styles.ruleText} dangerouslySetInnerHTML={{ __html: rules }}></span>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
