@@ -38,7 +38,7 @@ const Form = ({ form, onFinish, daysOfWeek = [], projectId }: FormProps) => {
             rules={[{ required: true, message: 'Пожалуйста, выберите дату' }]}>
             <CustomDatepicker
               projectId={projectId || ''}
-              onChange={async (date, formatted) => {
+              onChange={async (_date, formatted) => {
                 const data = await fetchAvailableTimeSlots({
                   projectId: projectId || '',
                   date: !Array.isArray(formatted) ? formatted || '' : '',
@@ -74,7 +74,7 @@ const Form = ({ form, onFinish, daysOfWeek = [], projectId }: FormProps) => {
             name='guests'
             rules={[{ required: true, message: 'Укажите количество гостей' }]}>
             <CustomSelector text='Гости' prefix={<UserOutlined style={{ color: '#9F9F9F' }} />}>
-              {Array.from({length: 20}, (v, i) => i).map((el, index) => {
+              {Array.from({length: 20}, (_v, i) => i).map((_el, index) => {
                 return <Option value={index + 1}>{index + 1}</Option>;
               })}
             </CustomSelector>
