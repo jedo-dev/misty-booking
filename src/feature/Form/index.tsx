@@ -25,14 +25,17 @@ interface FormProps {
   onFinish: (values: unknown) => void;
   daysOfWeek?: DayOfWeek[];
   projectId?: string;
+  commentEnabled:boolean;
+  guestCountEnabled:boolean;
+  Isloading:boolean;
 }
 
-const Form = ({ form, onFinish, daysOfWeek = [], projectId }: FormProps) => {
+const Form = ({ form, onFinish, daysOfWeek = [], projectId,guestCountEnabled, commentEnabled,Isloading}: FormProps) => {
   const [options, setOptions] = React.useState<string[]>([]);
   return (
     <AntForm form={form} layout='vertical' onFinish={onFinish} requiredMark='optional'>
       <Row gutter={[8, 0]}>
-        <Col span={24}>
+        <Col span={guestCountEnabled ? 24 : 12}>
           <AntForm.Item
             name='date'
             rules={[{ required: true, message: 'Пожалуйста, выберите дату' }]}>
@@ -60,16 +63,17 @@ const Form = ({ form, onFinish, daysOfWeek = [], projectId }: FormProps) => {
             rules={[{ required: true, message: 'Пожалуйста, выберите время' }]}>
             <CustomSelector
               text='Время'
+              
               style={{ width: '100%' }}
               prefix={<ClockCircleOutlined style={{ color: '#9f9f9f' }} />}>
               {options.map((el: string) => (
-                <Option value={el}>{el}</Option>
+                <Option value={el}>{el.replace(/:00$/, '')}</Option>
               ))}
             </CustomSelector>
           </AntForm.Item>
         </Col>
 
-        <Col span={12}>
+     {guestCountEnabled &&    <Col span={12}>
           <AntForm.Item
             name='guests'
             rules={[{ required: true, message: 'Укажите количество гостей' }]}>
@@ -79,13 +83,13 @@ const Form = ({ form, onFinish, daysOfWeek = [], projectId }: FormProps) => {
               })}
             </CustomSelector>
           </AntForm.Item>
-        </Col>
+        </Col>}
         <Divider style={{ margin: '20px 0' }} />
         <Col span={12}>
           <AntForm.Item
             name='name'
             rules={[{ required: true, message: 'Пожалуйста, введите имя' }]}>
-            <CustomInput text='Имя' />
+            <CustomInput text='Имя' maxLength={20} capitalizeFirst />
           </AntForm.Item>
         </Col>
 
@@ -93,15 +97,15 @@ const Form = ({ form, onFinish, daysOfWeek = [], projectId }: FormProps) => {
           <AntForm.Item
             name='phone'
             rules={[{ required: true, message: 'Пожалуйста, введите телефон' }]}>
-            <CustomInput text='Телефон' />
+            <CustomInput text='Телефон'  isPhone  />
           </AntForm.Item>
         </Col>
 
-        <Col span={24}>
+       {commentEnabled &&  <Col span={24}>
           <AntForm.Item name='comment'>
-            <CustomTextArea rows={3} text='Комментарий к бронированию' />
+            <CustomTextArea rows={3} maxLength={200} text='Комментарий к бронированию' />
           </AntForm.Item>
-        </Col>
+        </Col>}
 
         <Col span={24}>
           {' '}
@@ -116,11 +120,11 @@ const Form = ({ form, onFinish, daysOfWeek = [], projectId }: FormProps) => {
             ]}>
             <Checkbox>
               Я соглашаюсь с условиями{' '}
-              <a href='/terms' style={{ color: '#ff5c01' }}>
+              <a href='https://misty.ru/legal/terms/' target='_blank' style={{ color: '#ff5c01' }}>
                 Пользовательского соглашения
               </a>{' '}
               и{' '}
-              <a href='/privacy' style={{ color: '#ff5c01' }}>
+              <a href='https://misty.ru/legal/privacy/' target='_blank' style={{ color: '#ff5c01' }}>
                 политикой конфиденциальности
               </a>
             </Checkbox>
@@ -129,7 +133,7 @@ const Form = ({ form, onFinish, daysOfWeek = [], projectId }: FormProps) => {
       </Row>
 
       <AntForm.Item>
-        <Button type='primary' htmlType='submit' block>
+        <Button type='primary' htmlType='submit' block disabled={!!Isloading}>
           Забронировать
         </Button>
       </AntForm.Item>

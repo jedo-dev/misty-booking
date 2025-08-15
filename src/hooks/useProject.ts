@@ -12,7 +12,6 @@ const useProject = (projectCode: string) => {
     const loadData = async () => {
       try {
         const data = await fetchProject(projectCode);
-        //todo:поставить нужную дату
         setData(data);
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Unknown error');

@@ -14,7 +14,9 @@ const PlaceInformation = ({ text, address, rules }: PlaceInformation) => {
         <div className={styles.rules}>
           <span>Правила бронирования</span>
           <div>
-            <span className={styles.ruleText} dangerouslySetInnerHTML={{ __html: rules }}></span>
+            <span className={styles.ruleText} >
+              {rules?.split('\n')?.map((el)=><> - {el}<br/></>)}
+            </span>
           </div>
         </div>
       )}

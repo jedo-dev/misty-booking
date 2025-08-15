@@ -1,7 +1,8 @@
 import { CheckOutlined } from '@ant-design/icons';
-import { Form as AntForm, notification } from 'antd';
+import { Form as AntForm, notification, Spin } from 'antd';
 import { useState } from 'react';
 
+import dayjs from 'dayjs';
 import { useParams } from 'react-router';
 import { baseUrl, saveBooking } from '../api';
 import img from '../assets/Misty.png';
@@ -15,7 +16,6 @@ import Form from '../feature/Form';
 import FormResults from '../feature/FormResults';
 import MobilePromoLoad from '../feature/MobilePromoLoad';
 import useProject from '../hooks/useProject';
-import dayjs from 'dayjs';
 
 export const Main = () => {
   const { id } = useParams();
@@ -24,7 +24,7 @@ export const Main = () => {
   const [form] = AntForm.useForm();
   const [step, setStep] = useState(formStep.initial);
   const [api, contextHolder] = notification.useNotification();
-
+  const [Isloading, setLoading] = useState<boolean>(false);
   const openNotification = () => {
     api.open({
       message: (
@@ -39,12 +39,13 @@ export const Main = () => {
     });
   };
   const onFinish = async (values: any) => {
+    setLoading(true);
     try {
       // Формируем данные для API из значений формы
-      console.log(`val`,values.date,values.time)
+      console.log(`val`, values.date, values.time);
       const bookingData = {
         projectId: data?.projectId || '', // projectId из данных проекта
-        startDate: new Date(`${dayjs(values.date).format('YYYY-MM-DD')}T${values.time}`).toISOString(), // объединяем date и time
+        startDate: `${dayjs(values.date).format('YYYY-MM-DD')}T${values.time}.000Z`, // объединяем date и time
         guestCount: values.guests,
         clientPhone: values.phone,
         clientName: values.name,
@@ -57,7 +58,10 @@ export const Main = () => {
       // Показываем уведомление об успехе
       openNotification();
       setStep(formStep.finish);
+      setLoading(false);
     } catch (error) {
+      setLoading(false);
+      setStep(formStep.error);
       console.error('Ошибка при сохранении бронирования:', error);
       // Можно добавить обработку ошибки, например показать уведомление об ошибке
     }
@@ -76,7 +80,10 @@ export const Main = () => {
           address={data?.projectAddress || ''}
         />
         <Form
+          guestCountEnabled={!!data?.guestCountEnabled}
+          commentEnabled={!!data?.commentEnabled}
           form={form}
+          Isloading={Isloading}
           daysOfWeek={data?.daysOfWeek}
           projectId={data?.projectId}
           onFinish={onFinish}
@@ -107,15 +114,17 @@ export const Main = () => {
     setStep(formStep.error);
   }
   return (
-    <div
-      className='main-wrapper'
-      style={{
-        background: `url(${baseUrl + data?.backgroundUrl || img}) center/cover no-repeat`,
-      }}>
-      {contextHolder}
-      <MistyBlock />
-      {!loading && <div>{obj[step]}</div>}
-    </div>
+   
+      <div
+        className='main-wrapper'
+        style={{
+          background: `url(${baseUrl + data?.backgroundUrl || img}) center/cover no-repeat`,
+        }}>
+        {contextHolder}
+        <MistyBlock />
+        {!loading && <div>{obj[step]}</div>}
+      </div>
+   
   );
 };
 

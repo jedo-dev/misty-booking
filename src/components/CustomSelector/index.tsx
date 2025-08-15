@@ -9,11 +9,12 @@ const CustomSelector = ({ text, ...rest }: CustomSelectProps) => {
   const hasValue = !!rest.value;
   return (
     <div className='input-container'>
-      <div className={`custom-placeholder ${hasValue ? 'has-value' : ''}`} style={{ left: '30px' }}>
+      <div className={`custom-placeholder ${hasValue ? 'has-value' : ''}`} style={{ left: '33px' }}>
         {text} <span className='redmark'>*</span>
       </div>
       <Select
         {...rest}
+        notFoundContent={'Выберите дату брони'}
         size='large'
         style={{ height: '56px',  }}
       />

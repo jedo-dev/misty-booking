@@ -26,12 +26,14 @@ const FormResults = ({ comment, date, name, phone, time, resetForm }: CustomInpu
           <span>{time}</span>
         </Space>
       </Col>
-      <Col span={24} style={{ marginBottom: '16px' }}>
+      {
+       comment&& <Col span={24} style={{ marginBottom: '16px' }}>
         <Space className='finish-text-wrapper'>
           <CommentOutlined style={{ color: '#9f9f9f' }} />
           <span> {comment}</span>
         </Space>
       </Col>
+      }
 
       <Col span={24}>
         <Button
