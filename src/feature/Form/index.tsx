@@ -25,15 +25,23 @@ interface FormProps {
   onFinish: (values: unknown) => void;
   daysOfWeek?: DayOfWeek[];
   projectId?: string;
-  commentEnabled:boolean;
-  guestCountEnabled:boolean;
-  Isloading:boolean;
+  commentEnabled: boolean;
+  guestCountEnabled: boolean;
+  Isloading: boolean;
 }
 
-const Form = ({ form, onFinish, daysOfWeek = [], projectId,guestCountEnabled, commentEnabled,Isloading}: FormProps) => {
+const Form = ({
+  form,
+  onFinish,
+  daysOfWeek = [],
+  projectId,
+  guestCountEnabled,
+  commentEnabled,
+  Isloading,
+}: FormProps) => {
   const [options, setOptions] = React.useState<string[]>([]);
   return (
-    <AntForm form={form} layout='vertical' onFinish={onFinish} requiredMark='optional'>
+    <AntForm form={form} layout='vertical' onFinish={onFinish} requiredMark='optional'  initialValues={{ agreement: true }}>
       <Row gutter={[8, 0]}>
         <Col span={guestCountEnabled ? 24 : 12}>
           <AntForm.Item
@@ -63,7 +71,6 @@ const Form = ({ form, onFinish, daysOfWeek = [], projectId,guestCountEnabled, co
             rules={[{ required: true, message: 'Пожалуйста, выберите время' }]}>
             <CustomSelector
               text='Время'
-              
               style={{ width: '100%' }}
               prefix={<ClockCircleOutlined style={{ color: '#9f9f9f' }} />}>
               {options.map((el: string) => (
@@ -73,18 +80,20 @@ const Form = ({ form, onFinish, daysOfWeek = [], projectId,guestCountEnabled, co
           </AntForm.Item>
         </Col>
 
-     {guestCountEnabled &&    <Col span={12}>
-          <AntForm.Item
-            name='guests'
-            rules={[{ required: true, message: 'Укажите количество гостей' }]}>
-            <CustomSelector text='Гости' prefix={<UserOutlined style={{ color: '#9F9F9F' }} />}>
-              {Array.from({length: 20}, (_v, i) => i).map((_el, index) => {
-                return <Option value={index + 1}>{index + 1}</Option>;
-              })}
-            </CustomSelector>
-          </AntForm.Item>
-        </Col>}
-        <Divider style={{ margin: '20px 0' }} />
+        {guestCountEnabled && (
+          <Col span={12}>
+            <AntForm.Item
+              name='guests'
+              rules={[{ required: true, message: 'Укажите количество гостей' }]}>
+              <CustomSelector text='Гости' prefix={<UserOutlined style={{ color: '#9F9F9F' }} />}>
+                {Array.from({ length: 20 }, (_v, i) => i).map((_el, index) => {
+                  return <Option value={index + 1}>{index + 1}</Option>;
+                })}
+              </CustomSelector>
+            </AntForm.Item>
+          </Col>
+        )}
+        <Divider style={{ margin: '8px 0px 20px 0px' }} />
         <Col span={12}>
           <AntForm.Item
             name='name'
@@ -96,16 +105,30 @@ const Form = ({ form, onFinish, daysOfWeek = [], projectId,guestCountEnabled, co
         <Col span={12}>
           <AntForm.Item
             name='phone'
-            rules={[{ required: true, message: 'Пожалуйста, введите телефон' }]}>
-            <CustomInput text='Телефон'  isPhone  />
+            rules={[
+              { required: true, message: 'Пожалуйста, введите телефон' },
+              () => ({
+                validator(_, value) {
+                  // Удаляем все нецифровые символы
+                  const digitsOnly = value.replace(/\D/g, '');
+                  if (digitsOnly.length >= 9 && digitsOnly.length <= 15) {
+                    return Promise.resolve();
+                  }
+                  return Promise.reject(new Error('Телефон должен содержать от 9 до 15 цифр'));
+                },
+              }),
+            ]}>
+            <CustomInput text='Телефон' isPhone />
           </AntForm.Item>
         </Col>
 
-       {commentEnabled &&  <Col span={24}>
-          <AntForm.Item name='comment'>
-            <CustomTextArea rows={3} maxLength={200} text='Комментарий к бронированию' />
-          </AntForm.Item>
-        </Col>}
+        {commentEnabled && (
+          <Col span={24}>
+            <AntForm.Item name='comment'>
+              <CustomTextArea rows={3} maxLength={200} text='Комментарий к бронированию' />
+            </AntForm.Item>
+          </Col>
+        )}
 
         <Col span={24}>
           {' '}
@@ -124,7 +147,10 @@ const Form = ({ form, onFinish, daysOfWeek = [], projectId,guestCountEnabled, co
                 Пользовательского соглашения
               </a>{' '}
               и{' '}
-              <a href='https://misty.ru/legal/privacy/' target='_blank' style={{ color: '#ff5c01' }}>
+              <a
+                href='https://misty.ru/legal/privacy/'
+                target='_blank'
+                style={{ color: '#ff5c01' }}>
                 политикой конфиденциальности
               </a>
             </Checkbox>

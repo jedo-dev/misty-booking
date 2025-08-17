@@ -4,7 +4,7 @@ const MistyBlock = ({ centred }: { centred?: boolean }) => {
   return (
     <div className={!centred ? styles.wrapper : styles.wrappedCenter}>
       <img src={image} style={{ width: !centred ? 'inherit' : 200 }} />
-      <div className={styles.text}>Экосистема проектов</div>
+      <div className={ styles.text }>Экосистема проектов</div>
     </div>
   );
 };
