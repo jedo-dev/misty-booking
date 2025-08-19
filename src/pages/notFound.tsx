@@ -21,7 +21,7 @@ const NotFound = () => {
       <div className='notfound-text-wrapper'>
         <span className='notfound-text'>Страница не найдена</span>
         <Button style={{ width: 240 }} type='primary' onClick={handleGoToMain}>
-          на главную
+          На главную
         </Button>
       </div>
     </div>

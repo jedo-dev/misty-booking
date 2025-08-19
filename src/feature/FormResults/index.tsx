@@ -23,7 +23,7 @@ const FormResults = ({ comment, date, name, phone, time, resetForm }: CustomInpu
           <CalendarOutlined style={{ color: '#9f9f9f' }} />
           <span>{date.format('dddd, D MMMM')}</span>
           <span>в</span>
-          <span>{time}</span>
+          <span>{time.replace(/:00$/, '')}</span>
         </Space>
       </Col>
       {

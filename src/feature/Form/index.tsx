@@ -54,7 +54,7 @@ const Form = ({
                   projectId: projectId || '',
                   date: !Array.isArray(formatted) ? formatted || '' : '',
                 });
-
+                form?.setFieldValue('time',undefined)
                 setOptions(data);
               }}
               prefix={<CalendarOutlined style={{ color: '#9f9f9f' }} />}
