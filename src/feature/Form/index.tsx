@@ -21,7 +21,7 @@ export interface FormValues {
   time: string;
 }
 interface FormProps {
-  form: FormInstance<unknown> | undefined;
+  form: FormInstance<unknown> ;
   onFinish: (values: unknown) => void;
   daysOfWeek?: DayOfWeek[];
   projectId?: string;
@@ -40,6 +40,15 @@ const Form = ({
   Isloading,
 }: FormProps) => {
   const [options, setOptions] = React.useState<string[]>([]);
+   const [submittable, setSubmittable] = React.useState<boolean>(true);
+    const values = AntForm.useWatch([], form);
+
+  React.useEffect(() => {
+    form
+      .validateFields({ validateOnly: true })
+      .then(() => setSubmittable(true))
+      .catch(() => setSubmittable(false));
+  }, [form, values]);
   return (
     <AntForm form={form} layout='vertical' onFinish={onFinish} requiredMark='optional'  initialValues={{ agreement: true }}>
       <Row gutter={[8, 0]}>
@@ -159,7 +168,7 @@ const Form = ({
       </Row>
 
       <AntForm.Item>
-        <Button type='primary' htmlType='submit' block disabled={!!Isloading}>
+        <Button type='primary' htmlType='submit' block disabled={!!Isloading || !submittable}>
           Забронировать
         </Button>
       </AntForm.Item>
