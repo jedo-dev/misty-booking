@@ -17,9 +17,10 @@ const CustomTextArea = ({ text, ...rest }: CustomTextAreaProps) => {
         size='large'
         style={{
           paddingTop: `${hasValue ? '18px' : '12px'}`,
-          overflowY: 'hidden',
-          maxHeight: '120px',
+          overflowY: 'auto',
+          resize: 'none',
         }}
+        rows={3}
         maxLength={100}
       />
     </div>

@@ -1,6 +1,5 @@
 // Замените на более легковесное решение
 import { Input } from 'antd';
-import type { InputProps } from 'antd/lib';
 import { PatternFormat, type PatternFormatProps } from 'react-number-format';
 interface CustomInputProps extends PatternFormatProps {
   text: string;
@@ -8,7 +7,7 @@ interface CustomInputProps extends PatternFormatProps {
   capitalizeFirst?: boolean;
 }
 
-const CustomPhone = ({ text,value,  onChange, ...rest }: CustomInputProps) => {
+const CustomPhone = ({ text, value, ...rest }: CustomInputProps) => {
   const hasValue = !!value;
   return (
     <div className='input-container'>
@@ -16,16 +15,13 @@ const CustomPhone = ({ text,value,  onChange, ...rest }: CustomInputProps) => {
         {text} <span className='redmark'>*</span>
       </div>
       <PatternFormat
-         {...rest}
+        {...rest}
         customInput={Input}
-        format='+# (###) ### ## ##'
+        format='+# (###) ###-##-##'
         size='large'
         value={value}
-        onValueChange={(values) => {
-          onChange(values.formattedValue);
-        }}
-         style={{ height: '56px', paddingTop: `${hasValue ? '18px' : '12px'}` }}
-     
+        
+        style={{ height: '56px', paddingTop: `${hasValue ? '18px' : '12px'}` }}
       />
     </div>
   );

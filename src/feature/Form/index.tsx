@@ -122,16 +122,23 @@ const Form = ({
           <AntForm.Item
             name='phone'
             rules={[
-              {
+              () => ({
                 required: true,
                 message: 'Пожалуйста, введите телефон',
-              },
-              {
-                pattern: /^(\+7|8)[0-9]{10}$/,
-                message: 'Введите корректный номер телефона',
-              },
+                validator(_, value) {
+                  if(!value){
+                    return Promise.reject()
+                  }
+                  const digitsOnly = value.replace(/\D/g, '');
+                  
+                  if (digitsOnly.length == 11) {
+                    return Promise.resolve();
+                  }
+                  return Promise.reject();
+                },
+              }),
             ]}>
-            <CustomPhone text='Телефон' />
+            <CustomPhone text='Телефон' format={''} />
           </AntForm.Item>
         </Col>
 
@@ -172,7 +179,7 @@ const Form = ({
       </Row>
 
       <AntForm.Item>
-        <Button type='primary' htmlType='submit' block disabled={!!Isloading}>
+        <Button type='primary' htmlType='submit' block disabled={!!Isloading || !submittable}>
           Забронировать
         </Button>
       </AntForm.Item>

@@ -19,7 +19,6 @@ import useProject from '../hooks/useProject';
 
 export const Main = () => {
   const { id } = useParams();
-  console.log(`params`, id);
   const { data, loading, error } = useProject(id || '');
   const [form] = AntForm.useForm();
   const [step, setStep] = useState(formStep.initial);
@@ -38,6 +37,7 @@ export const Main = () => {
       placement: 'top',
     });
   };
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const onFinish = async (values: any) => {
     console.log(`values`,values)
     setLoading(true);
