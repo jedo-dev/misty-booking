@@ -896,6 +896,13 @@ ansi-styles@^4.1.0:
   dependencies:
     color-convert "^2.0.1"
 
+antd-phone-input@^0.3.14:
+  version "0.3.14"
+  resolved "https://registry.yarnpkg.com/antd-phone-input/-/antd-phone-input-0.3.14.tgz#5ad28d15de1d451bb78297f85185526a1a70610b"
+  integrity sha512-vMfiLmqI2cqT5DD8Jg1/leGcYVrmFMR+8lUFn1K6o8j7hgo0DkI9CIEphDQ3LO7RcJXp3sNzvaSfvF6FGaEdpA==
+  dependencies:
+    react-phone-hooks "^0.1.14"
+
 antd@^5.26.7:
   version "5.26.7"
   resolved "https://registry.yarnpkg.com/antd/-/antd-5.26.7.tgz#e2f7e37330b27eec0de7a7789767975373f61602"
@@ -2127,6 +2134,16 @@ react-is@^18.2.0:
   version "18.3.1"
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-18.3.1.tgz#e83557dc12eae63a99e003a46388b1dcbb44db7e"
   integrity sha512-/LLMVyas0ljjAtoYiPqYiL8VWXzUUdThrmU5+n20DZv+a+ClRoevUzw5JxU+Ieh5/c87ytoTBV9G1FiKfNJdmg==
+
+react-number-format@^5.4.4:
+  version "5.4.4"
+  resolved "https://registry.yarnpkg.com/react-number-format/-/react-number-format-5.4.4.tgz#d31f0e260609431500c8d3f81bbd3ae1fb7cacad"
+  integrity sha512-wOmoNZoOpvMminhifQYiYSTCLUDOiUbBunrMrMjA+dV52sY+vck1S4UhR6PkgnoCquvvMSeJjErXZ4qSaWCliA==
+
+react-phone-hooks@^0.1.14:
+  version "0.1.16"
+  resolved "https://registry.yarnpkg.com/react-phone-hooks/-/react-phone-hooks-0.1.16.tgz#93e7ff2f0a0559a925cd9062e5aab7a16b2320c0"
+  integrity sha512-ois/rigz+Y14GR7/vNlhtE5TK/pl/wZa65f1K6JcRi4i9k5JLD9869cnfzEDr9aHDx3eOF5kCOs6wQLUNlGLZw==
 
 react-refresh@^0.17.0:
   version "0.17.0"

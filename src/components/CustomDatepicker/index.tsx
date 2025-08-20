@@ -37,63 +37,57 @@ const CustomDatepicker = ({ text, daysOfWeek, projectId, ...rest }: CustomDatePi
   const [currentMonth, setCurrentMonth] = useState(dayjs().month() + 1);
   const [currentYear, setCurrentYear] = useState(dayjs().year());
   const hasValue = !!rest.value;
-
+  const set= new Set()
   const allowedDays = daysOfWeek.map((day) => dayOfWeekToDayjsMap[day]);
 
-  // Загружаем доступные даты при изменении месяца/года
-  useEffect(() => {
-    const loadDisabledDates = async () => {
-      try {
-        const response = await fetchAvailableDates({
-          month: currentMonth,
-          year: currentYear,
-          projectId,
-        });
-        console.log(`data`,response.disabledDates)
-        // Предполагаем, что сервер возвращает массив дат в формате ISO
-        setDisabledDates(response.disabledDates || []);
-      } catch (error) {
-        console.error('Failed to load disabled dates:', error);
-        // В случае ошибки просто блокируем все даты
-        setDisabledDates([]);
+  const loadDisabledDates = async (month: number, year: number) => {
+    try {
+      const response = await fetchAvailableDates({
+        month,
+        year,
+        projectId,
+      });
+      setDisabledDates(response.disabledDates || []);
+    } catch (error) {
+      console.error('Failed to load disabled dates:', error);
+      setDisabledDates([]);
+    }
+  };
+
+
+
+  const cellRender: DatePickerProps<Dayjs>['cellRender'] = (current, info) => {
+      if(currentYear!==dayjs(current).year()){
+        set.clear()
       }
-    };
+    set.add(dayjs(current)?.month() + 1)
+   setCurrentYear(dayjs(current).year())
+    console.log(`info`,set)
+    if (info.type !== 'date') {
+      return info.originNode;
+    }
+    if (typeof current === 'number' || typeof current === 'string') {
+      return <div className='ant-picker-cell-inner'>{current}</div>;
+    }
+    const newMonth = current?.month() + 1;
+    const newYear = current.year();
+    console.log(`here`, newMonth, newYear);
+    return <div className='ant-picker-cell-inner'>{current.date()}</div>;
+  };
 
-    loadDisabledDates();
-  }, [currentMonth, currentYear, projectId]);
-
-  // Функция для блокировки дат
   const disabledDate = (current: Dayjs) => {
-    // Блокируем прошедшие даты
     if (current.isBefore(dayjs(), 'day')) {
       return true;
     }
 
-    // Блокируем неразрешенные дни недели
     if (!allowedDays.includes(current.day())) {
       return true;
     }
 
-    // Блокируем даты из disabledDates
-  
     const dateString = current.format('YYYY-MM-DD');
     return disabledDates.includes(dateString);
   };
 
-  // Обработчик изменения панели (месяца/года)
-  const onPanelChange = (date: Dayjs, mode: unknown) => {
-    if (mode === 'month' || mode === 'year') {
-      const newMonth = date.month() + 1;
-      const newYear = date.year();
-
-      if (newMonth !== currentMonth || newYear !== currentYear) {
-        setCurrentMonth(newMonth);
-        setCurrentYear(newYear);
-      }
-    }
-  };
-
-  // Форматируем дату для отображения
   const formatDate = (date: Dayjs) => {
     return date.format('dddd, D MMMM');
   };
@@ -111,15 +105,8 @@ const CustomDatepicker = ({ text, daysOfWeek, projectId, ...rest }: CustomDatePi
         placeholder=' '
         onOpenChange={setOpen}
         onChange={(date) => {
-          if (date) {
-            const newMonth = date.month() + 1;
-            const newYear = date.year();
-            setCurrentMonth(newMonth);
-            setCurrentYear(newYear);
-          }
           rest.onChange?.(date, date?.format('YYYY-MM-DD'));
         }}
-        onPanelChange={onPanelChange}
         style={{ height: '56px', width: '100%' }}
         suffixIcon={null}
         locale={locale}
@@ -128,6 +115,7 @@ const CustomDatepicker = ({ text, daysOfWeek, projectId, ...rest }: CustomDatePi
         allowClear={false}
         inputReadOnly
         disabledDate={disabledDate}
+        cellRender={cellRender}
       />
     </div>
   );

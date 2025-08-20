@@ -39,6 +39,7 @@ export const Main = () => {
     });
   };
   const onFinish = async (values: any) => {
+    console.log(`values`,values)
     setLoading(true);
     try {
       // Формируем данные для API из значений формы
