@@ -45,7 +45,7 @@ h1 {
   position: absolute;
   left: 12px;
   top: 16px;
-  z-index: 1;
+  z-index: 100;
   font-size: 16px;
   line-height: 24px;
   color: #999;
@@ -103,25 +103,46 @@ h1 {
     width: 99dvw;
   }
 }
+.basic-wrapper {
+  background: #16310f !important;
+  border-radius: 1000px !important;
+   width: 237px !important;
+}
+.error-wrapper {
+  background: #7c0015 !important;
+  border-radius: 1000px !important;
 
+}
 .ant-notification-notice-wrapper {
   background: #16310f !important;
   width: 237px !important;
   border-radius: 1000px !important;
+  
 }
 .ant-notification-notice {
-  width: 237px !important;
+ 
 
   padding: 10px 16px !important;
 }
 .ant-notification-notice-message {
-  color: #28ae07 !important;
+  /* color: #28ae07 !important; */
 }
 .notification-text {
   font-family: Manrope;
   font-weight: 500;
   font-size: 16px;
   color: #28ae07 !important;
+  line-height: 24px;
+  letter-spacing: 0px;
+  text-align: center;
+  display: flex;
+  gap: 4px;
+}
+.notification-text-error {
+  font-family: Manrope;
+  font-weight: 500;
+  font-size: 16px;
+  color: #dfa7b1 !important;
   line-height: 24px;
   letter-spacing: 0px;
   text-align: center;
@@ -177,4 +198,7 @@ h1 {
     font-size: 34px;
     line-height: 36px;
   }
+}
+.testedid {
+  color: #5fa6fc !important;
 }

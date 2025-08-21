@@ -5,7 +5,7 @@ interface CustomSelectProps extends SelectProps {
 }
 
 const CustomSelector = ({ text, ...rest }: CustomSelectProps) => {
-  console.log(`rest`, rest);
+
   const hasValue = !!rest.value;
   return (
     <div className='input-container'>

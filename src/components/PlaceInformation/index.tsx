@@ -15,7 +15,7 @@ const PlaceInformation = ({ text, address, rules }: PlaceInformation) => {
           <span>Правила бронирования</span>
           <div>
             <span className={styles.ruleText} >
-              {rules?.split('\n')?.map((el)=><> - {el}<br/></>)}
+              {rules?.split('\n')?.map((el)=><span key={el}> - {el}<br/></span>)}
             </span>
           </div>
         </div>

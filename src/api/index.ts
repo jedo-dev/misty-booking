@@ -85,8 +85,7 @@ export const fetchAvailableTimeSlots = async (
 };
 
 export const saveBooking = async (params: SaveForm): Promise<unknown> => {
-  try {
-    const response: AxiosResponse<unknown> = await axios.post(
+  const response: AxiosResponse<unknown> = await axios.post(
       `${baseUrl}/booking/v1.0/booking/create`,
       params,
       {
@@ -97,15 +96,4 @@ export const saveBooking = async (params: SaveForm): Promise<unknown> => {
     );
 
     return response.data;
-  } catch (error) {
-    if (axios.isAxiosError(error)) {
-      console.error('Axios error:', error.response?.data || error.message);
-      throw new Error(
-        error.response?.data?.message || `Failed to fetch available dates: ${error.message}`,
-      );
-    } else {
-      console.error('Unexpected error:', error);
-      throw new Error('An unexpected error occurred');
-    }
-  }
 };

@@ -1,8 +1,7 @@
-import { CheckOutlined } from '@ant-design/icons';
+import { CheckOutlined, ExclamationOutlined } from '@ant-design/icons';
 import { Form as AntForm, notification } from 'antd';
 import { useState } from 'react';
 
-import dayjs from 'dayjs';
 import { useParams } from 'react-router';
 import { baseUrl, saveBooking } from '../api';
 import img from '../assets/Misty.png';
@@ -19,7 +18,6 @@ import useProject from '../hooks/useProject';
 
 export const Main = () => {
   const { id } = useParams();
-  console.log(`params`, id);
   const { data, loading, error } = useProject(id || '');
   const [form] = AntForm.useForm();
   const [step, setStep] = useState(formStep.initial);
@@ -27,6 +25,7 @@ export const Main = () => {
   const [Isloading, setLoading] = useState<boolean>(false);
   const openNotification = () => {
     api.open({
+      className: 'basic-wrapper',
       message: (
         <span className='notification-text'>
           <CheckOutlined />
@@ -38,16 +37,48 @@ export const Main = () => {
       placement: 'top',
     });
   };
+
+  const openErrorNotification = (text: string) => {
+    api.open({
+      className: 'error-wrapper',
+      message: (
+        <span className='notification-text-error'>
+          <ExclamationOutlined />
+          {text}
+        </span>
+      ),
+      icon: null,
+      closeIcon: null,
+      placement: 'top',
+    });
+  };
+
+  function cleanPhoneNumber(phone: string) {
+    if (!phone) return '';
+
+    // Оставляем только + и цифры
+    const cleaned = phone.replace(/[^\d+]/g, '');
+
+    // Если есть плюс, оставляем его только в начале
+    if (cleaned.includes('+')) {
+      return '+' + cleaned.replace(/[^\d]/g, '');
+    }
+
+    return cleaned;
+  }
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const onFinish = async (values: any) => {
+    console.log(`values`, values);
     setLoading(true);
     try {
       // Формируем данные для API из значений формы
       console.log(`val`, values.date, values.time);
       const bookingData = {
         projectId: data?.projectId || '', // projectId из данных проекта
-        startDate: `${dayjs(values.date).format('YYYY-MM-DD')}T${values.time}.000Z`, // объединяем date и time
+        startDate: `${values.time}.000Z`, // объединяем date и time
+        // startDate: '2025-08-21T10:00:00.000Z',
         guestCount: values.guests,
-        clientPhone: values.phone,
+        clientPhone: cleanPhoneNumber(values.phone),
         clientName: values.name,
         comment: values.comment || '', // если комментарий не обязателен
       };
@@ -61,7 +92,13 @@ export const Main = () => {
       setLoading(false);
     } catch (error) {
       setLoading(false);
-      setStep(formStep.error);
+      if (error.response.status == 400) {
+       return openErrorNotification(error.response.data.message);
+      }
+      else{
+           setStep(formStep.error);
+      }
+
       console.error('Ошибка при сохранении бронирования:', error);
       // Можно добавить обработку ошибки, например показать уведомление об ошибке
     }
@@ -114,17 +151,15 @@ export const Main = () => {
     setStep(formStep.error);
   }
   return (
-   
-      <div
-        className='main-wrapper'
-        style={{
-          background: `url(${baseUrl + data?.backgroundUrl || img}) center/cover no-repeat`,
-        }}>
-        {contextHolder}
-        <MistyBlock />
-        {!loading && <div>{obj[step]}</div>}
-      </div>
-   
+    <div
+      className='main-wrapper'
+      style={{
+        background: `url(${baseUrl + data?.backgroundUrl || img}) center/cover no-repeat`,
+      }}>
+      {contextHolder}
+      <MistyBlock />
+      {!loading && <div>{obj[step]}</div>}
+    </div>
   );
 };
 

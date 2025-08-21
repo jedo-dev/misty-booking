@@ -7,6 +7,7 @@ import React from 'react';
 import { fetchAvailableTimeSlots } from '../../api';
 import CustomDatepicker from '../../components/CustomDatepicker';
 import CustomInput from '../../components/CustomInput';
+import CustomPhone from '../../components/CustomPhone';
 import CustomSelector from '../../components/CustomSelector';
 import CustomTextArea from '../../components/CustomTextArea';
 import type { DayOfWeek } from '../../constant';
@@ -21,7 +22,7 @@ export interface FormValues {
   time: string;
 }
 interface FormProps {
-  form: FormInstance<unknown> ;
+  form: FormInstance<unknown>;
   onFinish: (values: unknown) => void;
   daysOfWeek?: DayOfWeek[];
   projectId?: string;
@@ -40,8 +41,8 @@ const Form = ({
   Isloading,
 }: FormProps) => {
   const [options, setOptions] = React.useState<string[]>([]);
-   const [submittable, setSubmittable] = React.useState<boolean>(true);
-    const values = AntForm.useWatch([], form);
+  const [submittable, setSubmittable] = React.useState<boolean>(true);
+  const values = AntForm.useWatch([], form);
 
   React.useEffect(() => {
     form
@@ -49,8 +50,14 @@ const Form = ({
       .then(() => setSubmittable(true))
       .catch(() => setSubmittable(false));
   }, [form, values]);
+
   return (
-    <AntForm form={form} layout='vertical' onFinish={onFinish} requiredMark='optional'  initialValues={{ agreement: true }}>
+    <AntForm
+      form={form}
+      layout='vertical'
+      onFinish={onFinish}
+      requiredMark='optional'
+      initialValues={{ agreement: true }}>
       <Row gutter={[8, 0]}>
         <Col span={guestCountEnabled ? 24 : 12}>
           <AntForm.Item
@@ -63,7 +70,7 @@ const Form = ({
                   projectId: projectId || '',
                   date: !Array.isArray(formatted) ? formatted || '' : '',
                 });
-                form?.setFieldValue('time',undefined)
+                form?.setFieldValue('time', undefined);
                 setOptions(data);
               }}
               prefix={<CalendarOutlined style={{ color: '#9f9f9f' }} />}
@@ -83,7 +90,7 @@ const Form = ({
               style={{ width: '100%' }}
               prefix={<ClockCircleOutlined style={{ color: '#9f9f9f' }} />}>
               {options.map((el: string) => (
-                <Option value={el}>{el.replace(/:00$/, '')}</Option>
+                <Option value={el}>{el.split('T')[1].replace(/:00$/, '')}</Option>
               ))}
             </CustomSelector>
           </AntForm.Item>
@@ -115,19 +122,23 @@ const Form = ({
           <AntForm.Item
             name='phone'
             rules={[
-              { required: true, message: 'Пожалуйста, введите телефон' },
               () => ({
+                required: true,
+                message: 'Пожалуйста, введите телефон',
                 validator(_, value) {
-                  // Удаляем все нецифровые символы
+                  if(!value){
+                    return Promise.reject()
+                  }
                   const digitsOnly = value.replace(/\D/g, '');
-                  if (digitsOnly.length >= 9 && digitsOnly.length <= 15) {
+                  
+                  if (digitsOnly.length == 11) {
                     return Promise.resolve();
                   }
-                  return Promise.reject(new Error('Телефон должен содержать от 9 до 15 цифр'));
+                  return Promise.reject();
                 },
               }),
             ]}>
-            <CustomInput text='Телефон' isPhone />
+            <CustomPhone text='Телефон' format={''} />
           </AntForm.Item>
         </Col>
 

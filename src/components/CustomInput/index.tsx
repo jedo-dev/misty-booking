@@ -13,7 +13,7 @@ const CustomInput = ({
   capitalizeFirst = false,
   ...rest
 }: CustomInputProps) => {
-  console.log(`rest`, rest);
+  
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let value = e.target.value;
 
