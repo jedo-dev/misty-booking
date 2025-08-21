@@ -1,4 +1,4 @@
-import { CheckOutlined } from '@ant-design/icons';
+import { CheckOutlined, ExclamationOutlined } from '@ant-design/icons';
 import { Form as AntForm, notification } from 'antd';
 import { useState } from 'react';
 
@@ -25,6 +25,7 @@ export const Main = () => {
   const [Isloading, setLoading] = useState<boolean>(false);
   const openNotification = () => {
     api.open({
+      className: 'basic-wrapper',
       message: (
         <span className='notification-text'>
           <CheckOutlined />
@@ -36,6 +37,22 @@ export const Main = () => {
       placement: 'top',
     });
   };
+
+  const openErrorNotification = (text: string) => {
+    api.open({
+      className: 'error-wrapper',
+      message: (
+        <span className='notification-text-error'>
+          <ExclamationOutlined />
+          {text}
+        </span>
+      ),
+      icon: null,
+      closeIcon: null,
+      placement: 'top',
+    });
+  };
+
   function cleanPhoneNumber(phone: string) {
     if (!phone) return '';
 
@@ -51,7 +68,7 @@ export const Main = () => {
   }
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const onFinish = async (values: any) => {
-    console.log(`values`,values)
+    console.log(`values`, values);
     setLoading(true);
     try {
       // Формируем данные для API из значений формы
@@ -59,6 +76,7 @@ export const Main = () => {
       const bookingData = {
         projectId: data?.projectId || '', // projectId из данных проекта
         startDate: `${values.time}.000Z`, // объединяем date и time
+        // startDate: '2025-08-21T10:00:00.000Z',
         guestCount: values.guests,
         clientPhone: cleanPhoneNumber(values.phone),
         clientName: values.name,
@@ -74,7 +92,13 @@ export const Main = () => {
       setLoading(false);
     } catch (error) {
       setLoading(false);
-      setStep(formStep.error);
+      if (error.response.status == 400) {
+       return openErrorNotification(error.response.data.message);
+      }
+      else{
+           setStep(formStep.error);
+      }
+
       console.error('Ошибка при сохранении бронирования:', error);
       // Можно добавить обработку ошибки, например показать уведомление об ошибке
     }
@@ -127,17 +151,15 @@ export const Main = () => {
     setStep(formStep.error);
   }
   return (
-   
-      <div
-        className='main-wrapper'
-        style={{
-          background: `url(${baseUrl + data?.backgroundUrl || img}) center/cover no-repeat`,
-        }}>
-        {contextHolder}
-        <MistyBlock />
-        {!loading && <div>{obj[step]}</div>}
-      </div>
-   
+    <div
+      className='main-wrapper'
+      style={{
+        background: `url(${baseUrl + data?.backgroundUrl || img}) center/cover no-repeat`,
+      }}>
+      {contextHolder}
+      <MistyBlock />
+      {!loading && <div>{obj[step]}</div>}
+    </div>
   );
 };
 
