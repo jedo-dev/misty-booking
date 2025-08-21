@@ -1,6 +1,7 @@
 import { CalendarOutlined, CommentOutlined, UserOutlined } from '@ant-design/icons';
 import { Button, Col, Row, Space } from 'antd';
 import type { FormValues } from '../Form';
+import dayjs from 'dayjs';
 
 interface CustomInputProps extends FormValues {
   text?: string;
@@ -21,9 +22,9 @@ const FormResults = ({ comment, date, name, phone, time, resetForm }: CustomInpu
       <Col span={24}>
         <Space className='finish-text-wrapper'>
           <CalendarOutlined style={{ color: '#9f9f9f' }} />
-          <span>{date.format('dddd, D MMMM')}</span>
+          <span>{dayjs(time).format('dddd, D MMMM')}</span>
           <span>в</span>
-          <span>{time.replace(/:00$/, '')}</span>
+          <span>{time.split('T')[1].replace(/:00$/, '')}</span>
         </Space>
       </Col>
       {

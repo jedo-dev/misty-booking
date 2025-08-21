@@ -90,7 +90,7 @@ const Form = ({
               style={{ width: '100%' }}
               prefix={<ClockCircleOutlined style={{ color: '#9f9f9f' }} />}>
               {options.map((el: string) => (
-                <Option value={el}>{el.replace(/:00$/, '')}</Option>
+                <Option value={el}>{el.split('T')[1].replace(/:00$/, '')}</Option>
               ))}
             </CustomSelector>
           </AntForm.Item>

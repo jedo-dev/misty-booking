@@ -2,7 +2,6 @@ import { CheckOutlined } from '@ant-design/icons';
 import { Form as AntForm, notification } from 'antd';
 import { useState } from 'react';
 
-import dayjs from 'dayjs';
 import { useParams } from 'react-router';
 import { baseUrl, saveBooking } from '../api';
 import img from '../assets/Misty.png';
@@ -37,6 +36,19 @@ export const Main = () => {
       placement: 'top',
     });
   };
+  function cleanPhoneNumber(phone: string) {
+    if (!phone) return '';
+
+    // Оставляем только + и цифры
+    const cleaned = phone.replace(/[^\d+]/g, '');
+
+    // Если есть плюс, оставляем его только в начале
+    if (cleaned.includes('+')) {
+      return '+' + cleaned.replace(/[^\d]/g, '');
+    }
+
+    return cleaned;
+  }
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const onFinish = async (values: any) => {
     console.log(`values`,values)
@@ -46,9 +58,9 @@ export const Main = () => {
       console.log(`val`, values.date, values.time);
       const bookingData = {
         projectId: data?.projectId || '', // projectId из данных проекта
-        startDate: `${dayjs(values.date).format('YYYY-MM-DD')}T${values.time}.000Z`, // объединяем date и time
+        startDate: `${values.time}.000Z`, // объединяем date и time
         guestCount: values.guests,
-        clientPhone: values.phone,
+        clientPhone: cleanPhoneNumber(values.phone),
         clientName: values.name,
         comment: values.comment || '', // если комментарий не обязателен
       };
