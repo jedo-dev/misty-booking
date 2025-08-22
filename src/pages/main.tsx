@@ -43,7 +43,7 @@ export const Main = () => {
       className: 'error-wrapper',
       message: (
         <span className='notification-text-error'>
-          <ExclamationOutlined />
+         
           {text}
         </span>
       ),
@@ -66,6 +66,7 @@ export const Main = () => {
 
     return cleaned;
   }
+ 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const onFinish = async (values: any) => {
     console.log(`values`, values);
@@ -75,8 +76,8 @@ export const Main = () => {
       console.log(`val`, values.date, values.time);
       const bookingData = {
         projectId: data?.projectId || '', // projectId из данных проекта
-        startDate: `${values.time}.000Z`, // объединяем date и time
-        // startDate: '2025-08-21T10:00:00.000Z',
+        // startDate: `${values.time}.000Z`, // объединяем date и time
+         startDate: '2025-08-21T10:00:00.000Z',
         guestCount: values.guests,
         clientPhone: cleanPhoneNumber(values.phone),
         clientName: values.name,
@@ -154,7 +155,7 @@ export const Main = () => {
     <div
       className='main-wrapper'
       style={{
-        background: `url(${baseUrl + data?.backgroundUrl || img}) center/cover no-repeat`,
+        background: `url(${ data?.backgroundUrl ?baseUrl + data?.backgroundUrl : img}) center/cover no-repeat`,
       }}>
       {contextHolder}
       <MistyBlock />

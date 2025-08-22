@@ -8,7 +8,7 @@ import type {
   SaveForm,
 } from '../constant';
 
-export const baseUrl = 'https://devmp.misty.group';
+export const baseUrl = import.meta.env.VITE_API_PATH || 'https://devmp.misty.group';
 
 export const fetchProject = async (projectCode: string): Promise<Project> => {
   try {
