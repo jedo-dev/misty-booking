@@ -76,8 +76,8 @@ export const Main = () => {
       console.log(`val`, values.date, values.time);
       const bookingData = {
         projectId: data?.projectId || '', // projectId из данных проекта
-        // startDate: `${values.time}.000Z`, // объединяем date и time
-         startDate: '2025-08-21T10:00:00.000Z',
+         startDate: `${values.time}.000Z`, // объединяем date и time
+        //  startDate: '2025-08-21T10:00:00.000Z',
         guestCount: values.guests,
         clientPhone: cleanPhoneNumber(values.phone),
         clientName: values.name,
