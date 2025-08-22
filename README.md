@@ -1,69 +1,55 @@
-# React + TypeScript + Vite
+# misty-booking-web
+## Система для бронирования времени, интегрированная с Misty Group API. Позволяет пользователям выбирать доступные даты и временные слоты для бронирования.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Функциональность
+Основной поток приложения:
+Проверка проекта - через параметры URL проверяется существование проекта
 
-Currently, two official plugins are available:
+Отображение формы - многошаговая форма бронирования
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Навигация по шагам - управление через enum FormStep
 
-## Expanding the ESLint configuration
+Обработка ошибок - система fallback для различных сценариев
+## Структура проекта
+src/
+├── components/          # Кастомные компоненты
+│   ├── Booking/        # Компоненты бронирования
+│   ├── Common/         # Общие компоненты
+│   └── Layout/         # Компоненты layout'а
+├── constants/          # Константы и типы
+├── pages/              # Страницы приложения
+├── types/              # TypeScript определения
+└── utils/              # Вспомогательные функции
+## Настройка переменных окружения
+VITE_API_PATH=https://devmp.misty.group
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Сборка с кастомным API endpoint
+docker build --build-arg VITE_API_PATH=https://your-custom-api.com -t misty-booking .
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## Процесс бронирования:
+* Ввод project code через URL параметр
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+* Загрузка информации о проекте
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+* Выбор доступной даты
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+* Выбор временного слота
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+* Заполнение информации о клиенте
 
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+* Подтверждение и создание бронирования
+
+## Технологии
+* React 19 - UI framework
+
+* TypeScript - типобезопасность
+
+* Vite - сборка и development server
+
+* Ant Design - UI компоненты
+
+* Axios - HTTP клиент
+
+* React Router - навигация
+
+* Day.js - работа с датами
